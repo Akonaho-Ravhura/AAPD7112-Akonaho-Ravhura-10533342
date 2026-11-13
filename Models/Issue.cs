@@ -4,6 +4,13 @@ namespace Municipal_Application.Models
     {
         public int Id { get; set; }
 
+        /// <summary>
+        /// The unique, resident-friendly identifier used to track a request,
+        /// e.g. "SR-00012" for a service request or "IR-00007" for an issue report.
+        /// </summary>
+        public string ReferenceNumber =>
+            $"{(RequestType == RequestType.ServiceRequest ? "SR" : "IR")}-{Id:D5}";
+
         public RequestType RequestType { get; set; } = RequestType.IssueReport;
 
         public string Title { get; set; } = string.Empty;

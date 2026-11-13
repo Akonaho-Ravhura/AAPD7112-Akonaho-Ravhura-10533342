@@ -149,9 +149,12 @@ Demo admin credentials:
   municipality (service interruptions, maintenance activity, community notices,
   progress updates). Search by title or description, filter by category and date
   range, and see recommendations based on your searches.
-- **My Reports & Updates** — see every issue/request you've submitted and its
-  current status, and open any of them to view the full update timeline (status
-  changes, admin comments, and photos posted by the municipality).
+- **Service Request Status** — see every issue/request you've submitted with its
+  status, track any of them by its unique reference number (e.g. `SR-00001` for a
+  service request, `IR-00003` for an issue report), see which of your requests
+  needs attention first, and see how each one relates to other requests in the
+  community. Open any request to view its full update timeline (status changes,
+  admin comments, and photos posted by the municipality).
 
 #### Reporting an Issue / Submitting a Service Request
 
@@ -174,7 +177,7 @@ Sign in as **Municipal Admin** to reach a tabbed dashboard:
   - Add a **comment**
   - Attach **photos**
   - Click **Post Update** to publish all three together as one timeline entry.
-    Residents see this immediately on their **My Reports & Updates** screen.
+    Residents see this immediately on their **Service Request Status** screen.
 - **Local Events tab** — view all posted notices, and post a new one (title,
   category, event date, and description) for residents to see under **Local Events
   and Announcements**.
@@ -193,18 +196,59 @@ Sign in as **Municipal Admin** to reach a tabbed dashboard:
 
 Only admins can change an issue/request's status — residents can only view it.
 
+### Service Request Status: Data Structures
+
+Every structure below is implemented from scratch in `DataStructures/` (not taken
+from the .NET collections) and is used by `Services/ServiceRequestIndex.cs` and
+`Services/RequestRelationshipGraph.cs`, which feed the **Service Request Status**
+screen.
+
+| Structure | Where it is used on the screen |
+| --- | --- |
+| **Binary tree** (`BinaryTree`, the base class of all three trees below) | Shared search, the four traversals (in-order, pre-order, post-order, level-order), range queries and height |
+| **Red-black tree** (`RedBlackTree`) keyed by request id | **Track a request**: finding one request from its reference number; also the "Reference number" sort order |
+| **AVL tree** (`AvlTree`) keyed by date submitted | "Newest/Oldest first" sort orders and the "Submitted from/to" date-range filter |
+| **Binary search tree** (`BinarySearchTree`) keyed by title | "Title A-Z" sort order and the "Title starts with" search |
+| **Max-heap** (`BinaryHeap`) keyed by priority score | "Needs attention first" list and the "Priority" sort order (a heap sort) |
+| **Weighted graph** (`WeightedGraph`) | Each request is a node; two requests are linked when they share a location and/or a category (weight 1 = both, 2 = location, 3 = category) |
+| **Graph traversal** (breadth-first and depth-first search) | **Related requests** panel: pick a request to list the community requests connected to it |
+| **Minimum spanning tree** (Prim's algorithm, built on the heap) | **Related requests** panel, "Minimum spanning tree" option: the closest-link chain joining a whole cluster of related requests |
+
+The footer of the screen shows the live size and height of each tree, which makes
+the difference between them visible (for example, the plain binary search tree can
+degrade into a linked list when keys arrive already sorted, while the AVL and
+red-black trees stay balanced).
+
+**Priority score** (higher = needs attention sooner; resolved and closed requests
+score 0): 10 points x the service's importance (water and electricity highest,
+routine queries lowest) + 2 points per day the request has been open + 15 points
+while it is still awaiting a first response.
+
+**Sample data.** Because the data is held in memory, the application adds 16
+sample requests when it starts so the screen has something to show. Four belong to
+the documented test resident (ID number `9001015001083`); the rest belong to
+other (made-up) residents and relate to those four by location or category. Log in
+with `9001015001083` to see the screen populated, or submit your own requests and
+watch them appear. Other residents' requests only ever appear, without their owner,
+as nodes in the **Related requests** panel.
+
 ## Project Structure
 
 ```
-Models/       Domain classes: User, Resident, Admin, Issue, IssueUpdate, LocalEvent,
-              RequestType, IssueCategory, ServiceRequestType, IssueStatus,
-              LocalEventCategory
-Data/         In-memory data storage, event seeding, and search recommendations
-Validation/   SouthAfricanIdValidator (format + check-digit validation)
-Forms/        All Windows Forms screens (LoginForm, MainMenuForm, ReportIssueForm,
-              ServiceRequestForm, MyReportsForm, IssueDetailForm, LocalEventsForm,
-              AdminDashboardForm) and the shared UiTheme
-Program.cs    Application entry point
+DataStructures/  Hand-written data structures: BinaryTree (base), BinarySearchTree,
+                 AvlTree, RedBlackTree, BinaryHeap, WeightedGraph
+Services/        ServiceRequestIndex (trees + heap), RequestRelationshipGraph,
+                 RequestPriorityCalculator, PrioritisedRequest
+Models/          Domain classes: User, Resident, Admin, Issue, IssueUpdate, LocalEvent,
+                 RequestType, IssueCategory, ServiceRequestType, IssueStatus,
+                 LocalEventCategory
+Data/            In-memory data storage, event/request seeding, and search
+                 recommendations
+Validation/      SouthAfricanIdValidator (format + check-digit validation)
+Forms/           All Windows Forms screens (LoginForm, MainMenuForm, ReportIssueForm,
+                 ServiceRequestForm, ServiceRequestStatusForm, IssueDetailForm,
+                 LocalEventsForm, AdminDashboardForm) and the shared UiTheme
+Program.cs       Application entry point
 ```
 
 ## Notes / Known Limitations
@@ -215,3 +259,7 @@ Program.cs    Application entry point
   database-backed store.
 - Resident sign-in does not use a password; the SA ID number plus contact number is
   treated as sufficient identification for this prototype.
+- The trees support insert, search, traversal and range queries. They do not
+  support deleting a single entry, because requests are never deleted (their status
+  changes instead); the Service Request Status screen rebuilds its indexes from the
+  stored requests each time it opens or is refreshed.

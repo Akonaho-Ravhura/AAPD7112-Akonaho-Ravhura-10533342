@@ -113,8 +113,8 @@ namespace Municipal_Application.Forms
             IssueRepository.Instance.Add(issue);
 
             MessageBox.Show(
-                $"Thank you, {_resident.FullName}! Your issue has been logged as Reference #{issue.Id}.\n\n" +
-                "You can track its progress from \"My Reports & Updates\" on the main menu.",
+                $"Thank you, {_resident.FullName}! Your issue has been logged as {issue.ReferenceNumber}.\n\n" +
+                "Use this reference number under \"Service Request Status\" on the main menu to track its progress.",
                 "Issue Reported",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

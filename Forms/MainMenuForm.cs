@@ -19,7 +19,7 @@ namespace Municipal_Application.Forms
             UiTheme.ApplySecondaryButtonStyle(btnLogout);
             flpActions.Controls.Add(CreateActionCard("Report Issues", "Tell us about a service delivery problem.", "!", BtnReportIssue_Click));
             flpActions.Controls.Add(CreateActionCard("Local Events & Announcements", "See notices and updates from your municipality.", "i", BtnLocalEvents_Click));
-            flpActions.Controls.Add(CreateActionCard("Service Request Status", "Track your requests, reports and updates.", "✓", BtnMyReports_Click));
+            flpActions.Controls.Add(CreateActionCard("Service Request Status", "Track your requests, reports and updates.", "✓", BtnServiceStatus_Click));
             flpActions.Controls.Add(CreateActionCard("Submit a Service Request", "Request a municipal service or support.", "+", BtnServiceRequest_Click));
             flpActions.Resize += (_, _) => LayoutActionCards();
             LayoutActionCards();
@@ -136,10 +136,10 @@ namespace Municipal_Application.Forms
             eventsForm.ShowDialog();
         }
 
-        private void BtnMyReports_Click(object? sender, EventArgs e)
+        private void BtnServiceStatus_Click(object? sender, EventArgs e)
         {
-            using var myReportsForm = new MyReportsForm(_resident);
-            myReportsForm.ShowDialog();
+            using var statusForm = new ServiceRequestStatusForm(_resident);
+            statusForm.ShowDialog();
         }
 
         private void BtnLogout_Click(object? sender, EventArgs e)

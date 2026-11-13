@@ -109,8 +109,8 @@ namespace Municipal_Application.Forms
             IssueRepository.Instance.Add(request);
 
             MessageBox.Show(
-                $"Thank you, {_resident.FullName}! Your service request has been logged as Reference #{request.Id}.\n\n" +
-                "You can track its progress from \"My Reports & Updates\" on the main menu.",
+                $"Thank you, {_resident.FullName}! Your service request has been logged as {request.ReferenceNumber}.\n\n" +
+                "Use this reference number under \"Service Request Status\" on the main menu to track its progress.",
                 "Service Request Submitted",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

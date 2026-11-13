@@ -22,7 +22,7 @@ namespace Municipal_Application.Forms
             lblHeading.ForeColor = UiTheme.Primary;
 
             var kind = issue.RequestType == RequestType.ServiceRequest ? "Service Request" : "Issue";
-            lblHeading.Text = $"{kind} #{issue.Id} - {issue.Title}";
+            lblHeading.Text = $"{kind} {issue.ReferenceNumber} - {issue.Title}";
             rtbIssueDescription.Text = issue.Description;
 
             RefreshInfo();
@@ -150,7 +150,7 @@ namespace Municipal_Application.Forms
             RefreshTimeline();
 
             MessageBox.Show(
-                $"Update posted for #{_issue.Id}. Status set to {newStatus}.",
+                $"Update posted for {_issue.ReferenceNumber}. Status set to {newStatus}.",
                 "Update Posted",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

@@ -13,6 +13,7 @@ namespace Municipal_Application
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            ServiceRequestSeeder.SeedIfEmpty();
             LocalEventSeeder.Instance.Start();
             Application.Run(new LoginForm());
         }
