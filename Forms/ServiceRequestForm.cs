@@ -11,8 +11,8 @@ namespace Municipal_Application.Forms
         public ServiceRequestForm(Resident resident)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             _resident = resident;
-            BackColor = UiTheme.Background;
             lblHeading.ForeColor = UiTheme.Primary;
             UiTheme.ApplyPrimaryButtonStyle(btnSubmit);
             cmbServiceType.DataSource = Enum.GetValues(typeof(ServiceRequestType));

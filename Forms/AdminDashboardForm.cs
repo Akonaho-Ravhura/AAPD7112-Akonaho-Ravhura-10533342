@@ -11,8 +11,8 @@ namespace Municipal_Application.Forms
         public AdminDashboardForm(Admin admin)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             _admin = admin;
-            BackColor = UiTheme.Background;
             lblHeading.ForeColor = UiTheme.Primary;
             UiTheme.ApplyPrimaryButtonStyle(btnViewUpdate);
             UiTheme.ApplyPrimaryButtonStyle(btnPostEvent);
@@ -86,7 +86,8 @@ namespace Municipal_Application.Forms
             var sb = new StringBuilder();
             foreach (var localEvent in events)
             {
-                sb.AppendLine($"[{localEvent.PostedDate:g}] {localEvent.Title} ({EnumDisplayFormatter.ToDisplayText(localEvent.Category)}) - by {localEvent.PostedByUsername}");
+                sb.AppendLine($"[{localEvent.EventDate:ddd, dd MMM yyyy}] {localEvent.Title} ({EnumDisplayFormatter.ToDisplayText(localEvent.Category)}) - by {localEvent.PostedByUsername}");
+                sb.AppendLine($"Posted {localEvent.PostedDate:g}");
                 sb.AppendLine(localEvent.Description);
                 sb.AppendLine(new string('-', 60));
             }
@@ -114,6 +115,7 @@ namespace Municipal_Application.Forms
                 Title = title,
                 Category = (LocalEventCategory)cmbEventCategory.SelectedItem!,
                 Description = description,
+                EventDate = dtpEventDate.Value.Date,
                 PostedByUsername = _admin.Username
             };
 

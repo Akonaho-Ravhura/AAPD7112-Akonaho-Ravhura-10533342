@@ -9,7 +9,7 @@ namespace Municipal_Application.Forms
         public LoginForm()
         {
             InitializeComponent();
-            BackColor = UiTheme.Background;
+            UiTheme.Apply(this);
             lblTitle.ForeColor = UiTheme.Primary;
             UiTheme.ApplyPrimaryButtonStyle(btnContinue);
         }

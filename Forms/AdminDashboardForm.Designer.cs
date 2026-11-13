@@ -19,6 +19,8 @@ namespace Municipal_Application.Forms
         private TextBox txtEventTitle;
         private Label lblEventCategory;
         private ComboBox cmbEventCategory;
+        private Label lblEventDate;
+        private DateTimePicker dtpEventDate;
         private Label lblEventDescription;
         private RichTextBox rtbEventDescription;
         private Button btnPostEvent;
@@ -49,6 +51,8 @@ namespace Municipal_Application.Forms
             txtEventTitle = new TextBox();
             lblEventCategory = new Label();
             cmbEventCategory = new ComboBox();
+            lblEventDate = new Label();
+            dtpEventDate = new DateTimePicker();
             lblEventDescription = new Label();
             rtbEventDescription = new RichTextBox();
             btnPostEvent = new Button();
@@ -132,6 +136,8 @@ namespace Municipal_Application.Forms
             tabEvents.Controls.Add(txtEventTitle);
             tabEvents.Controls.Add(lblEventCategory);
             tabEvents.Controls.Add(cmbEventCategory);
+            tabEvents.Controls.Add(lblEventDate);
+            tabEvents.Controls.Add(dtpEventDate);
             tabEvents.Controls.Add(lblEventDescription);
             tabEvents.Controls.Add(rtbEventDescription);
             tabEvents.Controls.Add(btnPostEvent);
@@ -179,12 +185,12 @@ namespace Municipal_Application.Forms
             //
             txtEventTitle.Location = new Point(10, 216);
             txtEventTitle.Name = "txtEventTitle";
-            txtEventTitle.Size = new Size(340, 23);
+            txtEventTitle.Size = new Size(230, 23);
             //
             // lblEventCategory
             //
             lblEventCategory.AutoSize = true;
-            lblEventCategory.Location = new Point(360, 198);
+            lblEventCategory.Location = new Point(250, 198);
             lblEventCategory.Name = "lblEventCategory";
             lblEventCategory.Size = new Size(58, 15);
             lblEventCategory.Text = "Category:";
@@ -192,9 +198,25 @@ namespace Municipal_Application.Forms
             // cmbEventCategory
             //
             cmbEventCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbEventCategory.Location = new Point(360, 216);
+            cmbEventCategory.Location = new Point(250, 216);
             cmbEventCategory.Name = "cmbEventCategory";
-            cmbEventCategory.Size = new Size(200, 23);
+            cmbEventCategory.Size = new Size(170, 23);
+            //
+            // lblEventDate
+            //
+            lblEventDate.AutoSize = true;
+            lblEventDate.Location = new Point(440, 198);
+            lblEventDate.Name = "lblEventDate";
+            lblEventDate.Size = new Size(62, 15);
+            lblEventDate.Text = "Event Date:";
+            //
+            // dtpEventDate
+            //
+            dtpEventDate.Format = DateTimePickerFormat.Short;
+            dtpEventDate.Location = new Point(440, 216);
+            dtpEventDate.MinDate = DateTime.Today;
+            dtpEventDate.Name = "dtpEventDate";
+            dtpEventDate.Size = new Size(150, 23);
             //
             // lblEventDescription
             //

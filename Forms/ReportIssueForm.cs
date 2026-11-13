@@ -11,8 +11,8 @@ namespace Municipal_Application.Forms
         public ReportIssueForm(Resident resident)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             _resident = resident;
-            BackColor = UiTheme.Background;
             lblHeading.ForeColor = UiTheme.Primary;
             UiTheme.ApplyPrimaryButtonStyle(btnSubmit);
             cmbCategory.DataSource = Enum.GetValues(typeof(IssueCategory));

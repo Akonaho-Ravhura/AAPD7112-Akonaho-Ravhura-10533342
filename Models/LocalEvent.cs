@@ -13,6 +13,8 @@ namespace Municipal_Application.Models
 
         public string Description { get; set; } = string.Empty;
 
+        public DateTime EventDate { get; set; } = DateTime.Today;
+
         public DateTime PostedDate { get; set; } = DateTime.Now;
 
         public string PostedByUsername { get; set; } = string.Empty;

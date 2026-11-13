@@ -14,11 +14,11 @@ namespace Municipal_Application.Forms
         public IssueDetailForm(Issue issue, bool isAdmin, Admin? admin = null)
         {
             InitializeComponent();
+            UiTheme.Apply(this);
             _issue = issue;
             _isAdmin = isAdmin;
             _admin = admin;
 
-            BackColor = UiTheme.Background;
             lblHeading.ForeColor = UiTheme.Primary;
 
             var kind = issue.RequestType == RequestType.ServiceRequest ? "Service Request" : "Issue";

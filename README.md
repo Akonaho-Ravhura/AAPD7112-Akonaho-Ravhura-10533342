@@ -145,9 +145,10 @@ Demo admin credentials:
 - **Report Issues** — report a service delivery problem (pothole, water leak, etc.).
 - **Submit a Service Request** — request a municipal service (new connection, bin
   collection, indigent support application, etc.).
-- **Local Events and Announcements** — view notices posted by the municipality
-  (service interruptions, maintenance activity, community notices, progress
-  updates).
+- **Local Events and Announcements** — browse upcoming notices posted by the
+  municipality (service interruptions, maintenance activity, community notices,
+  progress updates). Search by title or description, filter by category and date
+  range, and see recommendations based on your searches.
 - **My Reports & Updates** — see every issue/request you've submitted and its
   current status, and open any of them to view the full update timeline (status
   changes, admin comments, and photos posted by the municipality).
@@ -175,8 +176,20 @@ Sign in as **Municipal Admin** to reach a tabbed dashboard:
   - Click **Post Update** to publish all three together as one timeline entry.
     Residents see this immediately on their **My Reports & Updates** screen.
 - **Local Events tab** — view all posted notices, and post a new one (title,
-  category, description) for residents to see under **Local Events and
-  Announcements**.
+  category, event date, and description) for residents to see under **Local Events
+  and Announcements**.
+
+### Local Events Data Structures and Sample Seeding
+
+- Events are indexed by date in a `SortedDictionary`, with dictionaries for
+  category and ID lookups. Hash sets track unique categories and event dates, and
+  a priority queue returns the nearest upcoming events efficiently.
+- Search preferences are tracked per resident in memory. Category and keyword
+  frequencies, recent searches, and selected dates are used to suggest related
+  events.
+- The application posts one realistic sample event at startup, then another
+  every 2.5 minutes until it has generated 20. Sample events are future-dated and
+  appear in the resident's event list while the application is open.
 
 Only admins can change an issue/request's status — residents can only view it.
 
@@ -186,8 +199,7 @@ Only admins can change an issue/request's status — residents can only view it.
 Models/       Domain classes: User, Resident, Admin, Issue, IssueUpdate, LocalEvent,
               RequestType, IssueCategory, ServiceRequestType, IssueStatus,
               LocalEventCategory
-Data/         In-memory data storage: IssueRepository, IssueUpdateRepository,
-              LocalEventRepository, AdminAccountStore
+Data/         In-memory data storage, event seeding, and search recommendations
 Validation/   SouthAfricanIdValidator (format + check-digit validation)
 Forms/        All Windows Forms screens (LoginForm, MainMenuForm, ReportIssueForm,
               ServiceRequestForm, MyReportsForm, IssueDetailForm, LocalEventsForm,
